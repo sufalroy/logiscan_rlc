@@ -1,0 +1,18 @@
+pipeline:
+  streammux:
+    width: 1920
+    height: 1080
+    batch-timeout: 400000
+  pgie:
+    config-file: "/home/developer/Workspace/logiscan_rlc/config/pgie_config.txt"
+  tracker:
+    config-file: "/home/developer/Workspace/logiscan_rlc/config/nvtracker_config.txt"
+  nvdsanalytics:
+    config-file: "/home/developer/Workspace/logiscan_rlc/config/nvdsanalytics_config.txt"
+  tiler:
+    width: 1280
+    height: 720
+  sources:
+    - rtsp://admin:Admin1234@192.168.6.22:554/Streaming/Channels/101/
+  alarm:
+    uri: "http://192.168.6.23"
