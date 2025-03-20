@@ -12,15 +12,14 @@ from ..pipeline.pipeline_config import PipelineConfig
 from ..analytics.analytics_probe import AnalyticsProbe
 from ..utils.exceptions import PipelineError
 
-
 class PipelineBuilder:
-    def __init__(self, config: dict):
+    def __init__(self, config: dict, event_loop):
         self.config = PipelineConfig(config)
         self.element_factory = ElementFactory()
 
         alarm_uri = config['pipeline']['alarm']['uri']
         self.alarm_client = AlarmClient(alarm_uri)
-        self.analytics_probe = AnalyticsProbe(self.alarm_client)
+        self.analytics_probe = AnalyticsProbe(self.alarm_client, event_loop)
         self.logger = logging.getLogger(self.__class__.__name__)
 
     def build_pipeline(self, uris: List[str]) -> Gst.Pipeline:

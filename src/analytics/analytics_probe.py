@@ -1,11 +1,12 @@
 import time
+import asyncio
 from gi.repository import Gst
 import pyds
 
-
 class AnalyticsProbe:
-    def __init__(self, alarm_client, threshold_count=4, check_interval_seconds=900):
+    def __init__(self, alarm_client, event_loop, threshold_count=4, check_interval_seconds=30):
         self.alarm_client = alarm_client
+        self.event_loop = event_loop
         self.threshold_count = threshold_count
         self.check_interval_seconds = check_interval_seconds
         self.last_check_time = time.time()
@@ -47,6 +48,6 @@ class AnalyticsProbe:
                     should_trigger = True
                 l_frame = l_frame.next
             if should_trigger:
-                self.alarm_client.trigger_alarm()
+                asyncio.run_coroutine_threadsafe(self.alarm_client.trigger_alarm(), self.event_loop)
             self.last_check_time = current_time
         return Gst.PadProbeReturn.OK
